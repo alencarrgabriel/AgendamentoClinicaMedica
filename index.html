@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Agendamento Médico</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <form id="loginForm" class="login-form">
+                <h2>Login</h2>
+                <!-- RF001: Campo de entrada para usuário -->
+                <div class="input-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" placeholder="Digite seu e-mail ou CPF" required>
+                </div>
+
+                <!-- RF002: Campo de entrada para senha -->
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+                </div>
+
+                <!-- RF003: Checkbox para "Lembrar Senha" -->
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Lembrar Senha</label>
+                </div>
+
+                <button type="submit" class="login-button">Entrar</button>
+
+                <div class="links">
+                    <!-- RF004: Botão para esqueci a senha -->
+                    <a href="#" id="forgotPassword">Esqueceu a senha?</a>
+                    <!-- RF005: Botão para se cadastrar -->
+                    <a href="cadastro.html">Criar conta</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta - Sistema de Agendamento Médico</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="consulta-container">
+            <h2>Minhas Consultas</h2>
+            
+            <!-- Filtros simples -->
+            <div class="filtros">
+                <select id="filtroStatus">
+                    <option value="">Todos os status</option>
+                    <option value="agendada">Agendada</option>
+                    <option value="realizada">Realizada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+                <input type="date" id="filtroData">
+                <button onclick="filtrarConsultas()">Filtrar</button>
+            </div>
+
+            <!-- Lista de consultas -->
+            <div class="lista-consultas" id="listaConsultas">
+                <!-- As consultas serão inseridas aqui via JavaScript -->
+            </div>
+
+            <!-- Navegação simples -->
+            <div class="navegacao">
+                <a href="agendamento.html">Nova Consulta</a>
+                <a href="index.html">Sair</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/consulta.js"></script>
+</body>
+</html> 

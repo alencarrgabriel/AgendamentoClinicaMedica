@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento - Sistema de Agendamento Médico</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar/Menu Lateral -->
+        <nav class="sidebar">
+            <div class="user-info">
+                <img src="img/user-avatar.png" alt="Avatar do usuário" class="avatar">
+                <span class="user-name" id="userName">Nome do Usuário</span>
+            </div>
+            <ul class="menu">
+                <li class="active"><a href="agendamento.html"><i class="icon">📅</i> Agendamentos</a></li>
+                <li><a href="perfil.html"><i class="icon">👤</i> Meu Perfil</a></li>
+                <li><a href="historico.html"><i class="icon">📋</i> Histórico</a></li>
+                <li><a href="#" id="logout"><i class="icon">🚪</i> Sair</a></li>
+            </ul>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Agendamento de Consultas</h1>
+                <button class="new-appointment-btn" id="newAppointmentBtn">Nova Consulta</button>
+            </header>
+
+            <!-- Formulário de Agendamento -->
+            <section class="appointment-section">
+                <div class="appointment-form-container">
+                    <form id="appointmentForm" class="appointment-form">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="specialty">Especialidade Médica</label>
+                                <select id="specialty" name="specialty" required>
+                                    <option value="">Selecione uma especialidade</option>
+                                    <option value="ginecologista">Ginecologista</option>
+                                    <option value="urologista">Urologista</option>
+                                    <option value="cardiologista">Cardiologista</option>
+                                    <option value="clinico">Clínico Geral</option>
+                                    <option value="ortopedista">Ortopedista</option>
+                                    <option value="dermatologista">Dermatologista</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="doctor">Médico</label>
+                                <select id="doctor" name="doctor" required disabled>
+                                    <option value="">Primeiro selecione uma especialidade</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="appointmentDate">Data da Consulta</label>
+                                <input type="date" id="appointmentDate" name="appointmentDate" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="appointmentTime">Horário</label>
+                                <select id="appointmentTime" name="appointmentTime" required disabled>
+                                    <option value="">Primeiro selecione uma data</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="reason">Motivo da Consulta</label>
+                            <textarea id="reason" name="reason" rows="3" placeholder="Descreva brevemente o motivo da consulta"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="schedule-button">Agendar Consulta</button>
+                            <button type="button" class="cancel-button">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Lista de Agendamentos -->
+            <section class="appointments-list-section">
+                <h2>Minhas Consultas Agendadas</h2>
+                <div class="appointments-list" id="appointmentsList">
+                    <!-- Os agendamentos serão inseridos aqui dinamicamente -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/validation.js"></script>
+    <script src="js/agendamento.js"></script>
+</body>
+</html> 
