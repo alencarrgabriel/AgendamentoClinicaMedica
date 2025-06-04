@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico - Sistema de Agendamento Médico</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar/Menu Lateral -->
+        <nav class="sidebar">
+            <div class="user-info">
+                <img src="img/user-avatar.png" alt="Avatar do usuário" class="avatar">
+                <span class="user-name" id="userName">Nome do Usuário</span>
+            </div>
+            <ul class="menu">
+                <li><a href="agendamento.html"><i class="fas fa-calendar-alt"></i> Agendamentos</a></li>
+                <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                <li class="active"><a href="historico.html"><i class="fas fa-clipboard-list"></i> Histórico</a></li>
+                <li><a href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Histórico de Consultas</h1>
+                <div class="filter-controls">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">Todos os Status</option>
+                        <option value="completed">Realizadas</option>
+                        <option value="cancelled">Canceladas</option>
+                        <option value="scheduled">Agendadas</option>
+                    </select>
+                    <input type="date" id="dateFilter" class="filter-date">
+                </div>
+            </header>
+
+            <section class="history-section">
+                <div class="history-list" id="historyList">
+                    <!-- O histórico será inserido aqui dinamicamente -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/validation.js"></script>
+    <script src="js/historico.js"></script>
+</body>
+</html> 

@@ -26,179 +26,179 @@ const mockDoctors = {
     ]
 };
 
-// Elementos do DOM
-const appointmentForm = document.getElementById('appointmentForm');
-const specialtySelect = document.getElementById('specialty');
-const doctorSelect = document.getElementById('doctor');
-const dateInput = document.getElementById('appointmentDate');
-const timeSelect = document.getElementById('appointmentTime');
-const appointmentsList = document.getElementById('appointmentsList');
-const logoutBtn = document.getElementById('logout');
-
-// Funções auxiliares
-const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
-};
-
-const generateTimeSlots = () => {
-    const times = [];
-    for (let hour = 8; hour <= 17; hour++) {
-        times.push(`${hour.toString().padStart(2, '0')}:00`);
-        times.push(`${hour.toString().padStart(2, '0')}:30`);
-    }
-    return times;
-};
-
-const populateTimeSlots = () => {
-    timeSelect.innerHTML = '<option value="">Selecione um horário</option>';
-    timeSelect.disabled = true;
-
-    if (!dateInput.value) return;
-
-    const times = generateTimeSlots();
-    times.forEach(time => {
-        const option = document.createElement('option');
-        option.value = time;
-        option.textContent = time;
-        timeSelect.appendChild(option);
-    });
-    timeSelect.disabled = false;
-};
-
-const populateDoctors = (specialty) => {
-    doctorSelect.innerHTML = '<option value="">Selecione um médico</option>';
-    doctorSelect.disabled = true;
-
-    if (!specialty) return;
-
-    const doctors = mockDoctors[specialty] || [];
-    doctors.forEach(doctor => {
-        const option = document.createElement('option');
-        option.value = doctor.id;
-        option.textContent = doctor.name;
-        doctorSelect.appendChild(option);
-    });
-    doctorSelect.disabled = false;
-};
-
-const createAppointmentCard = (appointment) => {
-    const card = document.createElement('div');
-    card.className = 'appointment-card';
-    card.innerHTML = `
-        <h3>${appointment.specialty}</h3>
-        <p class="appointment-info">Médico: ${appointment.doctor}</p>
-        <p class="appointment-info">Data: ${formatDate(appointment.date)}</p>
-        <p class="appointment-info">Horário: ${appointment.time}</p>
-        <p class="appointment-info">Status: ${appointment.status}</p>
-        <div class="appointment-actions">
-            <button class="action-button reschedule-btn" data-id="${appointment.id}">Remarcar</button>
-            <button class="action-button cancel-btn" data-id="${appointment.id}">Cancelar</button>
-        </div>
-    `;
-    return card;
-};
-
-// Event Listeners
-specialtySelect.addEventListener('change', () => {
-    populateDoctors(specialtySelect.value);
-});
-
-dateInput.addEventListener('change', () => {
-    populateTimeSlots();
-});
-
-appointmentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = {
-        specialty: specialtySelect.options[specialtySelect.selectedIndex].text,
-        doctor: doctorSelect.options[doctorSelect.selectedIndex].text,
-        date: dateInput.value,
-        time: timeSelect.value,
-        reason: document.getElementById('reason').value
-    };
-
-    try {
-        const response = await mockScheduleAppointment(formData);
-        
-        if (response.success) {
-            alert('Consulta agendada com sucesso!');
-            appointmentForm.reset();
-            loadAppointments();
-        } else {
-            alert(response.message || 'Erro ao agendar consulta');
-        }
-    } catch (error) {
-        console.error('Erro ao agendar consulta:', error);
-        alert('Erro ao agendar consulta. Tente novamente mais tarde.');
-    }
-});
-
-appointmentsList.addEventListener('click', async (e) => {
-    if (e.target.classList.contains('cancel-btn')) {
-        const appointmentId = e.target.dataset.id;
-        if (confirm('Tem certeza que deseja cancelar esta consulta?')) {
-            try {
-                const response = await mockCancelAppointment(appointmentId);
-                if (response.success) {
-                    alert('Consulta cancelada com sucesso!');
-                    loadAppointments();
-                }
-            } catch (error) {
-                console.error('Erro ao cancelar consulta:', error);
-                alert('Erro ao cancelar consulta. Tente novamente mais tarde.');
-            }
-        }
-    } else if (e.target.classList.contains('reschedule-btn')) {
-        const appointmentId = e.target.dataset.id;
-        alert('Funcionalidade de remarcação em desenvolvimento');
-    }
-});
-
-logoutBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    localStorage.removeItem('userToken');
-    sessionStorage.removeItem('userToken');
-    window.location.href = 'index.html';
-});
-
-// Mock APIs
-const mockScheduleAppointment = async (formData) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                success: true,
-                message: 'Consulta agendada com sucesso'
-            });
-        }, 1000);
-    });
-};
-
-const mockCancelAppointment = async (appointmentId) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                success: true,
-                message: 'Consulta cancelada com sucesso'
-            });
-        }, 1000);
-    });
-};
-
-// Verificação de autenticação
-const checkAuth = () => {
+document.addEventListener('DOMContentLoaded', () => {
+    // Verificar autenticação
     const token = localStorage.getItem('userToken') || sessionStorage.getItem('userToken');
     if (!token) {
         window.location.href = 'index.html';
+        return;
     }
-};
 
-// Inicialização
-document.addEventListener('DOMContentLoaded', () => {
-    checkAuth();
-    
+    const appointmentForm = document.getElementById('appointmentForm');
+    const specialtySelect = document.getElementById('specialty');
+    const doctorSelect = document.getElementById('doctor');
+    const dateInput = document.getElementById('appointmentDate');
+    const timeSelect = document.getElementById('appointmentTime');
+    const appointmentsList = document.getElementById('appointmentsList');
+    const logoutBtn = document.getElementById('logout');
+
     // Definir data mínima como hoje
     const today = new Date().toISOString().split('T')[0];
     dateInput.min = today;
+
+    // Mock de médicos por especialidade
+    const doctorsBySpecialty = {
+        'ginecologista': ['Dra. Maria Silva', 'Dra. Ana Santos'],
+        'urologista': ['Dr. João Costa', 'Dr. Pedro Lima'],
+        'cardiologista': ['Dr. Carlos Oliveira', 'Dra. Paula Souza'],
+        'clinico': ['Dr. Roberto Alves', 'Dra. Camila Lima'],
+        'ortopedista': ['Dr. Marcos Santos', 'Dra. Julia Costa'],
+        'dermatologista': ['Dra. Beatriz Oliveira', 'Dr. Ricardo Silva']
+    };
+
+    // Mock de horários disponíveis
+    const availableTimes = [
+        '08:00', '09:00', '10:00', '11:00',
+        '14:00', '15:00', '16:00', '17:00'
+    ];
+
+    // Event Listeners
+    specialtySelect.addEventListener('change', updateDoctors);
+    dateInput.addEventListener('change', updateTimes);
+    
+    function updateDoctors() {
+        const specialty = specialtySelect.value;
+        doctorSelect.innerHTML = '<option value="">Selecione um médico</option>';
+        doctorSelect.disabled = !specialty;
+
+        if (specialty) {
+            doctorsBySpecialty[specialty].forEach(doctor => {
+                const option = document.createElement('option');
+                option.value = doctor;
+                option.textContent = doctor;
+                doctorSelect.appendChild(option);
+            });
+        }
+    }
+
+    function updateTimes() {
+        const selectedDate = dateInput.value;
+        timeSelect.innerHTML = '<option value="">Selecione um horário</option>';
+        timeSelect.disabled = !selectedDate;
+
+        if (selectedDate) {
+            availableTimes.forEach(time => {
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                timeSelect.appendChild(option);
+            });
+        }
+    }
+
+    // Carregar consultas existentes
+    loadAppointments();
+
+    // Manipular envio do formulário
+    appointmentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const appointment = {
+            specialty: specialtySelect.value,
+            doctor: doctorSelect.value,
+            date: dateInput.value,
+            time: timeSelect.value,
+            reason: document.getElementById('reason').value,
+            status: 'scheduled',
+            id: Date.now().toString()
+        };
+
+        try {
+            // Salvar no localStorage
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            appointments.push(appointment);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+
+            // Atualizar a lista de consultas
+            loadAppointments();
+
+            // Limpar formulário
+            appointmentForm.reset();
+            doctorSelect.disabled = true;
+            timeSelect.disabled = true;
+
+            alert('Consulta agendada com sucesso!');
+        } catch (error) {
+            console.error('Erro ao agendar consulta:', error);
+            alert('Erro ao agendar consulta. Tente novamente mais tarde.');
+        }
+    });
+
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('userToken');
+        sessionStorage.removeItem('userToken');
+        window.location.href = 'index.html';
+    });
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    }
+
+    function loadAppointments() {
+        const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+        const currentAppointments = appointments.filter(app => app.status === 'scheduled');
+        
+        appointmentsList.innerHTML = '';
+
+        if (currentAppointments.length === 0) {
+            appointmentsList.innerHTML = `
+                <div class="no-appointments">
+                    <p>Nenhuma consulta agendada</p>
+                </div>
+            `;
+            return;
+        }
+
+        currentAppointments.forEach(appointment => {
+            const appointmentElement = document.createElement('div');
+            appointmentElement.className = 'appointment-item';
+            appointmentElement.innerHTML = `
+                <div class="appointment-info">
+                    <h3>Consulta com ${appointment.doctor}</h3>
+                    <div class="appointment-details">
+                        <p><i class="fas fa-stethoscope"></i> ${appointment.specialty}</p>
+                        <p><i class="fas fa-calendar"></i> ${formatDate(appointment.date)}</p>
+                        <p><i class="fas fa-clock"></i> ${appointment.time}</p>
+                        ${appointment.reason ? `<p><i class="fas fa-comment"></i> ${appointment.reason}</p>` : ''}
+                    </div>
+                </div>
+                <div class="appointment-actions">
+                    <button onclick="cancelAppointment('${appointment.id}')" class="cancel-appointment-btn">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            `;
+            appointmentsList.appendChild(appointmentElement);
+        });
+    }
+
+    // Função global para cancelar consulta
+    window.cancelAppointment = function(appointmentId) {
+        if (confirm('Tem certeza que deseja cancelar esta consulta?')) {
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            const appointmentIndex = appointments.findIndex(app => app.id === appointmentId);
+            
+            if (appointmentIndex !== -1) {
+                appointments[appointmentIndex].status = 'cancelled';
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                loadAppointments();
+            }
+        }
+    };
 }); 
