@@ -41,7 +41,7 @@ Sistema web para agendamento de consultas médicas desenvolvido como parte do pr
 
 1. Clone o repositório:
 ```bash
-git clone [URL_DO_REPOSITORIO]
+git clone https://github.com/alencarrgabriel/AgendamentoClinicaMedica.git
 ```
 
 2. Abra o arquivo `index.html` em um navegador web moderno
@@ -74,10 +74,27 @@ git clone [URL_DO_REPOSITORIO]
 - Segurança de dados
 - Preparado para integrações futuras
 
+## Histórico de Atualizações
+
+### Última Atualização (Commit mais recente)
+- Remoção dos arquivos do dashboard (dashboard.html, dashboard.css, dashboard.js)
+- Simplificação da estrutura do projeto
+- Otimização do fluxo de navegação
+
 ## Contribuição
 Para contribuir com o projeto:
 1. Faça um fork do repositório
 2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
 3. Faça commit das mudanças (`git commit -m 'Adiciona nova feature'`)
 4. Faça push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request 
+5. Abra um Pull Request
+
+## Controle de Versão
+O projeto utiliza Git para controle de versão. Commits recentes:
+- Remove dashboard files (último commit)
+- Commits anteriores podem ser visualizados no histórico do repositório
+
+## Status do Projeto
+- Branch principal: `master`
+- Estado atual: Em desenvolvimento ativo
+- Última atualização: Remoção de componentes não utilizados para otimização 
